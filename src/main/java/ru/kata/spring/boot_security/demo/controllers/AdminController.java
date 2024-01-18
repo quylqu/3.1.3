@@ -4,10 +4,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import ru.kata.spring.boot_security.demo.entities.Role;
 import ru.kata.spring.boot_security.demo.entities.User;
 import ru.kata.spring.boot_security.demo.services.MainService;
 
 import java.security.Principal;
+import java.util.List;
 
 @Controller
 public class AdminController {
@@ -19,28 +21,20 @@ public class AdminController {
         model.addAttribute("users", mainService.getAllUsers());
         return "users";
     }
-//
-//    @PostMapping("/admin/users")
-//    public String deleteUser(@RequestParam(required = true, defaultValue = "") Long userId,
-//                             @RequestParam(required = true, defaultValue = "") String action,
-//                             Model model) {
-//        if (action.equals("delete")) {
-//            userService.deleteUser(userId);
-//        }
-//        return "redirect:/admin/users";
-//    }
 
-//    @GetMapping("/new")
-//    public String newUser(Model model) {
-//        model.addAttribute("user", new User());
-//        return "new";
-//    }
+    @GetMapping("/admin/users/new")
+    public String newUser(Model model) {
+        List<Role> roles = mainService.getAllRoles();
+        model.addAttribute("roles", roles);
+        model.addAttribute("user", new User());
+        return "new";
+    }
 
-//    @PutMapping()
-//    public String create(@ModelAttribute("user") User user) {
-//        mainService.save(user);
-//        return "redirect:/users";
-//    }
+    @PutMapping("/admin/users")
+    public String create(@ModelAttribute("user") User user) {
+        mainService.save(user);
+        return "redirect:/admin/users";
+    }
 
     @GetMapping("/admin/users/idForUpdate")
     public String showUpdateUserForm() {
@@ -55,12 +49,14 @@ public class AdminController {
     @GetMapping("/admin/users/update/{id}")
     public String updateUserByID(@PathVariable("id") Long id, Model model) {
         User user = mainService.getUserById(id);
+        List<Role> roles = mainService.getAllRoles();
+        model.addAttribute("roles", roles);
         model.addAttribute("user", user);
         return "update";
     }
 
     @PatchMapping("/admin/users/update/{id}")
-    public String update(@PathVariable("id") Long id, @ModelAttribute User user, Model model) {
+    public String update(@PathVariable("id") Long id, @ModelAttribute User user) {
         mainService.update(id, user);
         return "redirect:/admin/users";
     }
@@ -74,5 +70,24 @@ public class AdminController {
     public String processDeleteUserForm(@RequestParam("id") Long id) {
         mainService.delete(id);
         return "redirect:/admin/users";
+    }
+
+    @GetMapping("/admin/users/userID")
+    public String getIDUserForm() {
+        return "userID";
+    }
+
+    @PostMapping("/admin/users/userID")
+    public String postIDUserForm(@RequestParam("id") Long id) {
+        return "redirect:/admin/users/userID/" + id;
+    }
+
+    @GetMapping("/admin/users/userID/{id}")
+    public String getShowUserByID(@PathVariable("id") Long id, Model model) {
+        User user = mainService.getUserById(id);
+        List<Role> roles = mainService.getAllRoles();
+        model.addAttribute("roles", roles);
+        model.addAttribute("user", user);
+        return "user";
     }
 }

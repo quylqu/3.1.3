@@ -10,5 +10,12 @@
 <p>Username: <span th:text="${user.username}"></span></p>
 <p>Email: <span th:text="${user.email}"></span></p>
 <p>Password: <span th:text="${user.password}"></span></p>
+<p>Roles:</p>
+<ul>
+    <li th:each="role : ${user.roles}" th:text="${role.name}"></li>
+</ul>
+<br>
+<br>
+<a href="/logout">Logout</a>
 </body>
 </html>

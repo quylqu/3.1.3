@@ -9,10 +9,15 @@
 <ul>
     <li th:each="user : ${users}" th:text="${user.toString()}"></li>
 </ul>
-<a href="/users/new">Add New User</a>
+<a href="/admin/users/new">Add New User</a>
 <br>
 <a href="/admin/users/idForUpdate">Update User by ID</a>
 <br>
 <a href="/admin/users/idForDelete">Delete User by ID</a>
+<br>
+<a href="/admin/users/userID">View profile by ID</a>
+<br>
+<br>
+<a href="/logout">Logout</a>
 </body>
 </html>

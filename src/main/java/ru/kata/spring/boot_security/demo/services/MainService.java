@@ -15,6 +15,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -41,23 +42,27 @@ public class MainService implements UserDetailsService {
                 mapRolesToAuthorities(user.getRoles()));
     }
 
+    private Collection<? extends GrantedAuthority> mapRolesToAuthorities(Collection<Role> roles) {
+        return new ArrayList<>(roles);
+    }
     public ru.kata.spring.boot_security.demo.entities.User findByUsername(String username) {
         return userRepository.findByUsername(username);
     }
 
-    private Collection<? extends GrantedAuthority> mapRolesToAuthorities(Collection<Role> roles) {
-        return roles.stream().map(r -> new SimpleGrantedAuthority(r.getName())).collect(Collectors.toList());
-    }
 
     public List<User> getAllUsers() {
         TypedQuery<User> query = entityManager.createQuery("SELECT u FROM User u", User.class);
         return query.getResultList();
     }
+    public List<Role> getAllRoles() {
+        TypedQuery<Role> query = entityManager.createQuery("SELECT u FROM Role u", Role.class);
+        return query.getResultList();
+    }
 
-    //    @Transactional
-//    public void save(User user) {
-//        entityManager.merge(user);
-//    }
+    @Transactional
+    public void save(User user) {
+        entityManager.merge(user);
+    }
 
     @Transactional
     public void update(long id, User user) {
@@ -65,6 +70,7 @@ public class MainService implements UserDetailsService {
         userForUpdate.setUsername(user.getUsername());
         userForUpdate.setEmail(user.getEmail());
         userForUpdate.setPassword(user.getPassword());
+        userForUpdate.setRoles(user.getRoles());
         entityManager.persist(userForUpdate);
     }
 
