@@ -8,7 +8,6 @@ import ru.kata.spring.boot_security.demo.entities.Role;
 import ru.kata.spring.boot_security.demo.entities.User;
 import ru.kata.spring.boot_security.demo.services.MainService;
 
-import java.security.Principal;
 import java.util.List;
 
 @Controller

@@ -2,7 +2,6 @@ package ru.kata.spring.boot_security.demo.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -18,7 +17,6 @@ import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class MainService implements UserDetailsService {
@@ -45,15 +43,16 @@ public class MainService implements UserDetailsService {
     private Collection<? extends GrantedAuthority> mapRolesToAuthorities(Collection<Role> roles) {
         return new ArrayList<>(roles);
     }
+
     public ru.kata.spring.boot_security.demo.entities.User findByUsername(String username) {
         return userRepository.findByUsername(username);
     }
-
 
     public List<User> getAllUsers() {
         TypedQuery<User> query = entityManager.createQuery("SELECT u FROM User u", User.class);
         return query.getResultList();
     }
+
     public List<Role> getAllRoles() {
         TypedQuery<Role> query = entityManager.createQuery("SELECT u FROM Role u", Role.class);
         return query.getResultList();

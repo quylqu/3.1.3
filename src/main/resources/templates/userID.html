@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>UserID</title>
+</head>
+<body>
+<h2>Enter User ID to view profile</h2>
+<form method="POST" th:action="@{/admin/users/userID}">
+    <input type="text" id="id" name="id" required>
+    <button type="submit">View profile</button>
+</form>
+<br>
+<br>
+<a href="/logout">Logout</a>
+</body>
+</html>

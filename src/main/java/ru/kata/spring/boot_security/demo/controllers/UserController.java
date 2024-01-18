@@ -13,6 +13,7 @@ import java.security.Principal;
 public class UserController {
     @Autowired
     private MainService mainService;
+
     @GetMapping("/user")
     public String pageForAuthenticatedUser(Model model, Principal principal) {
         User user = mainService.findByUsername(principal.getName());
